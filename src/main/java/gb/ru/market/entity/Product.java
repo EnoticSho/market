@@ -12,9 +12,14 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;
-    @Column(name = "name")
-    private String title;
-    @Column(name = "cost")
+    @Column(name = "product_name")
+    private String name;
+    @Column(name = "price")
     private int price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
