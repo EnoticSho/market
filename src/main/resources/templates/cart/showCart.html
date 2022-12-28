@@ -14,24 +14,38 @@
         <th> Name </th>
         <th> Price </th>
         <th> Type </th>
+        <th> Quantity </th>
     </tr>
 
-    <tr th:if="${Cart.isEmpty()}">
+    <tr th:if="${allProducts.isEmpty()}">
         <td colspan="3"> No Products available </td>
     </tr>
 
-    <tr th:each="cart : ${Cart}">
-        <td th:text="${cart.getId()}"></td>
-        <td th:text="${cart.getName()}"></td>
-        <td th:text="${cart.getPricePerCount()}"></td>
-        <td th:text="${cart.getQuantity()}"></td>
-
+    <tr th:each="product : ${allProducts}">
+        <td th:text="${product.getId()}"></td>
+        <td><a th:href="@{/products/{id}(id = ${product.getId()})}"><span th:text="${product.getName()}"></span></a></td>
+        <td th:text="${product.getPrice()}"><</td>
+        <td th:text="${product.getCategory().getTitle()}"></td>
         <td>
-            <form th:action="@{/cart/{id}(id = ${cart.getId()})}" th:object="${cart}" th:method="delete">
-                <button type="submit" class="btn btn-primary">Удалить из корзины</button>
+
+        </td>
+        <td>
+            <form th:action="@{/cart}" th:object="${cartItem}" th:method="post">
+                <label>
+                    <input type="number" th:field="*{quantity}" size="5" name="quantity" min="1">
+                </label>
+                <input type="hidden" th:with="a = ${product.getId()}">
+                <input type="hidden"  th:field="*{name}"/>
+                <input type="hidden" th:value="${product.getPrice()}" th:field="*{pricePerCount}"/>
+                <button type="submit" class="btn btn-primary">Добавить в корзину</button>
             </form>
         </td>
     </tr>
 </table>
+
+<!--<form method="get" th:action="@{/products/newProduct}">-->
+<!--  <input type="submit" class="btn btn-primary" value="Добавить Продукт">-->
+<!--</form>-->
+
 </body>
 </html>
