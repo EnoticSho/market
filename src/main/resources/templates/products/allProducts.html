@@ -26,16 +26,10 @@
     <td th:text="${product.getPrice()}"><</td>
     <td th:text="${product.getCategory().getTitle()}"></td>
     <td>
-      <label>
-        <input type="number" th:field="${cartItem.quantity}" size="5" name="quantity" min="1">
-      </label>
-    </td>
-    <td>
-      <form th:action="@{/cart}" th:method="post">
-
+      <form th:action="@{/cart/{id}(id = ${product.getId()})}" th:method="post">
         <label>
-        <input type="text" th:field="${cartItem.name}" value="asdf">
-      </label>
+          <input type="number" th:field="${cartItem.quantity}" size="5" name="quantity" min="1">
+        </label>
         <button type="submit" class="btn btn-primary">Добавить в корзину</button>
       </form>
     </td>

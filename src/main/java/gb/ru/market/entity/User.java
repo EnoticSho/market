@@ -1,10 +1,10 @@
 package gb.ru.market.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -22,8 +22,8 @@ public class User {
     private String name;
     @Column(name = "user_password")
     private String password;
-//    @Column(name = "user_role")
-//    private Role role;
+    @Column(name = "user_role")
+    private Role role;
     @Column(name = "user_status")
     private Status status;
 

@@ -31,16 +31,27 @@ public class CartController {
         return "cart/showCart";
     }
 
-    @PostMapping
-    public String addProductToCart(@ModelAttribute("cartItem") CartItem cartItem) {
-        System.out.println(cartItem);
+    @PostMapping("/{id}")
+    public String addProductToCart(@PathVariable Long id, @RequestParam("quantity") int quantity) {
+        Product productById = productService.getProductById(id);
+        CartItem cartItem = new CartItem(productById.getId(),
+                productById.getName(),
+                productById.getPrice(),
+                quantity,
+                productById.getPrice() * quantity);
         cartService.add(cartItem);
         return "redirect:/";
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}")
     public String deleteProductFromCart(@PathVariable Long id) {
         cartService.deleteFromCart(id);
+        return "redirect:/cart";
+    }
+
+    @DeleteMapping
+    public String cleatCart(){
+        cartService.clearCart();
         return "redirect:/cart";
     }
 }

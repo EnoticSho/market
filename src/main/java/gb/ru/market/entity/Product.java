@@ -1,7 +1,7 @@
 package gb.ru.market.entity;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

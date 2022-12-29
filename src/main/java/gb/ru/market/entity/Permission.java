@@ -1,9 +1,9 @@
 package gb.ru.market.entity;
 
 public enum Permission {
-    PRODUCTS("products"),
-    USERS("users"),
-    CREATEUSER("createUser");
+    VIEW("view"),
+    EDITING("editing"),
+    USERS("users");
 
     private final String permission;
 
