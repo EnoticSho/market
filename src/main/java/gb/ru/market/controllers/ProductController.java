@@ -4,6 +4,7 @@ import gb.ru.market.entity.Product;
 import gb.ru.market.model.CartItem;
 import gb.ru.market.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/")
+@PreAuthorize("hasAuthority('view')")
 public class ProductController {
     private ProductService productService;
 
@@ -37,6 +39,7 @@ public class ProductController {
 
 
     @GetMapping("/newProduct")
+    @PreAuthorize("hasAuthority('editing')")
     public String newProduct(Model model) {
         Product product = new Product();
         model.addAttribute("newProduct", product);
@@ -44,12 +47,14 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('editing')")
     public String addNewProduct(Product product) {
         productService.saveProduct(product);
         return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('editing')")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/";

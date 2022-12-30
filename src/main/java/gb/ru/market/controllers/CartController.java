@@ -28,8 +28,10 @@ public class CartController {
     public String showCart(Model model) {
         List<CartItem> allProducts = cartService.showProductsInCart();
         model.addAttribute("Cart", allProducts);
+        model.addAttribute("price", cartService.getTotalPrice());
         return "cart/showCart";
     }
+
 
     @PostMapping("/{id}")
     public String addProductToCart(@PathVariable Long id, @RequestParam("quantity") int quantity) {
@@ -41,6 +43,18 @@ public class CartController {
                 productById.getPrice() * quantity);
         cartService.add(cartItem);
         return "redirect:/";
+    }
+
+    @PatchMapping("/addQuantity/{id}")
+    public String addQuantity(@PathVariable Long id, @RequestParam int inc) {
+        cartService.editCartItem(id, inc);
+        return "redirect:/cart";
+    }
+
+    @PatchMapping("/subtractQuantity/{id}")
+    public String subtractQuantity(@PathVariable Long id, @RequestParam int inc) {
+        cartService.editCartItem(id, inc);
+        return "redirect:/cart";
     }
 
     @PatchMapping("/{id}")

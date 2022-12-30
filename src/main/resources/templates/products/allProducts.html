@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
@@ -28,17 +29,16 @@
     <td>
       <form th:action="@{/cart/{id}(id = ${product.getId()})}" th:method="post">
         <label>
-          <input type="number" th:field="${cartItem.quantity}" size="5" name="quantity" min="1">
+          <input type="number" th:field="${cartItem.quantity}" size="5" name="quantity" min="1" th:value="1">
         </label>
         <button type="submit" class="btn btn-primary">Добавить в корзину</button>
       </form>
     </td>
   </tr>
 </table>
-
-<!--<form method="get" th:action="@{/products/newProduct}">-->
-<!--  <input type="submit" class="btn btn-primary" value="Добавить Продукт">-->
-<!--</form>-->
+<form method="get" th:action="@{/newProduct}" sec:authorize="hasAuthority('editing')">
+  <input type="submit" class="btn btn-primary" value="Добавить Продукт">
+</form>
 
 </body>
 </html>

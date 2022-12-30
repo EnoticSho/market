@@ -9,10 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-@Scope("singleton")
 @Getter
 public class Cart {
-    private List<CartItem> itemList;
+    private final List<CartItem> itemList;
     private int amount;
 
     public Cart() {
@@ -22,6 +21,20 @@ public class Cart {
     public void addProductToCart(CartItem item) {
         amount += item.getTotalPrice();
         itemList.add(item);
+    }
+
+    public void editCartItem(Long id, int k){
+        int sum = 0;
+        for (CartItem cartItem : itemList) {
+            if (Objects.equals(cartItem.getId(), id)) {
+                cartItem.resize(k);
+                if (cartItem.getQuantity() == 0) {
+                    itemList.remove(cartItem);
+                }
+            }
+            sum += cartItem.getTotalPrice();
+        }
+        amount = sum;
     }
 
     public void clearTheCart() {
@@ -36,5 +49,14 @@ public class Cart {
                 itemList.remove(itemList.get(i));
             }
         }
+    }
+
+    public CartItem findProductById(Long id) {
+        for (CartItem cartItem : itemList) {
+            if (Objects.equals(cartItem.getId(), id)) {
+                return cartItem;
+            }
+        }
+        return null;
     }
 }

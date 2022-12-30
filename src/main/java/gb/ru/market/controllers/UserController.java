@@ -31,19 +31,19 @@ public class UserController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("role", Role.ADMIN);
         System.out.println(userService);
-        return "user/All_users";
+        return "users/All_users";
     }
 
     @GetMapping("/new")
-    @PreAuthorize("hasAuthority('createUser')")
+    @PreAuthorize("hasAuthority('editing')")
     public String formForNewUser(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("roles", Arrays.stream(Role.values()).filter(a -> a != Role.ADMIN).collect(Collectors.toList()));
         model.addAttribute("status", Status.values());
-        return "user/form";
+        return "users/form";
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('createUser')")
+    @PreAuthorize("hasAuthority('editing')")
     public String createUser(@ModelAttribute("user") User user) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -52,23 +52,23 @@ public class UserController {
     }
 
     @GetMapping("/{id}/edit")
-    @PreAuthorize("hasAuthority('createUser')")
+    @PreAuthorize("hasAuthority('editing')")
     public String editUser(@PathVariable Long id, Model model) {
         model.addAttribute("userEdit", userService.getUserById(id));
         model.addAttribute("roles", Arrays.stream(Role.values()).filter(a -> a != Role.ADMIN).collect(Collectors.toList()));
         model.addAttribute("status", Status.values());
-        return "user/edit_form";
+        return "users/edit_form";
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('createUser')")
+    @PreAuthorize("hasAuthority('editing')")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/users";
     }
 
     @PatchMapping()
-    @PreAuthorize("hasAuthority('createUser')")
+    @PreAuthorize("hasAuthority('editing')")
     public String update(@ModelAttribute("userEdit") User user) {
         userService.saveUser(user);
         return "redirect:/users";

@@ -14,14 +14,8 @@ public class CartItem {
     private int quantity;
     private int totalPrice;
 
-    @Override
-    public String toString() {
-        return "CartItem{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", pricePerCount=" + pricePerCount +
-                ", quantity=" + quantity +
-                ", totalPrice=" + totalPrice +
-                '}';
+    public void resize(int inc) {
+        quantity = quantity + inc;
+        totalPrice = quantity * pricePerCount;
     }
 }

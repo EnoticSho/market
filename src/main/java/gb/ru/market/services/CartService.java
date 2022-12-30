@@ -18,6 +18,10 @@ public class CartService {
         this.cart = cart;
     }
 
+    public CartItem findById(Long id) {
+        return cart.findProductById(id);
+    }
+
 
     public List<CartItem> showProductsInCart() {
         return cart.getItemList();
@@ -33,5 +37,13 @@ public class CartService {
 
     public void deleteFromCart(Long productId) {
         cart.removeProduct(productId);
+    }
+
+    public int getTotalPrice() {
+        return cart.getAmount();
+    }
+
+    public void editCartItem(Long id, int inc) {
+        cart.editCartItem(id, inc);
     }
 }

@@ -14,14 +14,14 @@
         <th> Name  </th>
         <th> Role </th>
         <th> Status </th>
-        <th sec:authorize="hasAuthority('createUser')"> Action </th>
+        <th sec:authorize="hasAuthority('users')"> Action </th>
     </tr>
 
     <tr th:each="user : ${users}" th:if="${!user.getRole().equals(role)}">
         <td th:text="${user.getName()}"></td>
         <td th:text="${user.getRole()}"><</td>
         <td th:text="${user.getStatus()}"><</td>
-        <td sec:authorize="hasAuthority('createUser')">
+        <td sec:authorize="hasAuthority('users')">
             <form th:action="@{/users/{id}(id = ${user.getId()})}" th:object="${user}" th:method="delete">
                 <button type="submit">Удалить</button>
             </form>
@@ -32,7 +32,7 @@
     </tr>
 </table>
 
-<form sec:authorize="hasAuthority('createUser')" method="get" th:action="@{/users/new}">
+<form sec:authorize="hasAuthority('users')" method="get" th:action="@{/users/new}">
     <input type="submit" class="btn btn-primary" value="Добавить юзера">
 </form>
 

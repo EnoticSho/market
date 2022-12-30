@@ -9,7 +9,7 @@
 </head>
 <body class="container">
 
-<form method="post" th:action="@{/products/}" th:object="${newProduct} ">
+<form method="post" th:action="@{/}" th:object="${newProduct} ">
   <div class="form-group">
     <label for="name">Name</label>
     <input id="name" placeholder="Enter Name" required type="text" th:field="*{name}"

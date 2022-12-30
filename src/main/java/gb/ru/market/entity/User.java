@@ -22,8 +22,10 @@ public class User {
     private String name;
     @Column(name = "user_password")
     private String password;
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "user_role")
     private Role role;
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "user_status")
     private Status status;
 
