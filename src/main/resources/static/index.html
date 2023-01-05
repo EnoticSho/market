@@ -35,26 +35,18 @@
         </tr>
         </tbody>
     </table>
-    <p></p>
+    <br>
     <h3>Корзина</h3>
     <table class="table table-hover">
         <tr>
             <td>Название</td>
-            <td>Количество</td>
             <td>Цена</td>
         </tr>
-        <tr ng-repeat="item in cart.items">
-            <td>{{item.productTitle}}</td>
+        <tr ng-repeat="item in productInCart">
+            <td>{{item.name}}</td>
+            <td>{{item.pricePerCount}}</td>
             <td>
-                <button type="button" class="btn btn-outline-dark" ng-click="changeQuantity(item.productId, -1)">-
-                </button>
-                {{item.quantity}}
-                <button type="button" class="btn btn-outline-dark" ng-click="changeQuantity(item.productId, +1)">+
-                </button>
-            </td>
-            <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + item.price}}</td>
-            <td>
-                <button type="button" class="btn btn-danger" ng-click="deleteProductFromCart(item.productId)">Удалить
+                <button type="button" class="btn btn-danger" ng-click="deleteProductFromCart(item.id)">Удалить
                 </button>
             </td>
         </tr>
@@ -64,7 +56,7 @@
             <td></td>
             <td>{{cart.totalPrice}}</td>
             <td>
-                <button type="button" class="btn btn-danger" ng-click="clearCart()">Очистить</button>
+                <button type="button" class="btn btn-danger" ng-click="clearTheCart()">Очистить</button>
                 <button type="button" class="btn btn-outline-success" ng-click="createOrder(user)">Оформить заказ</button>
             </td>
         </tr>

@@ -12,10 +12,12 @@ import java.util.List;
 public class CartService {
 
     private final Cart cart;
+    private final ProductService productService;
 
     @Autowired
-    public CartService(Cart cart, ProductService productService) {
+    public CartService(Cart cart, ProductService productService, ProductService productService1) {
         this.cart = cart;
+        this.productService = productService1;
     }
 
     public CartItem findById(Long id) {
@@ -27,7 +29,13 @@ public class CartService {
         return cart.getItemList();
     }
 
-    public void add(CartItem cartItem) {
+    public void add(Long id) {
+        Product product = productService.getProductById(id);
+        CartItem cartItem = new CartItem(product.getId(),
+                product.getName(),
+                product.getPrice(),
+                1,
+                product.getPrice());
         cart.addProductToCart(cartItem);
     }
 
