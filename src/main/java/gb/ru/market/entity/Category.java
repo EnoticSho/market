@@ -13,14 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
-    @Column(name = "category_name")
-    private String title;
-
-    @OneToMany(mappedBy = "category")
-    private List<Product> productEntities;
+//    @Column(name = "category_name")
+//    private String title;
+//    @OneToMany(mappedBy = "category")
+//    private List<Product> productEntities;
 }
