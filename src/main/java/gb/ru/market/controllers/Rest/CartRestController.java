@@ -26,12 +26,12 @@ public class CartRestController {
         cartService.add(id);
     }
 
-    @PutMapping("/IncrementQuantity/{id}")
+    @PutMapping("/increment/{id}")
     public void addQuantity(@PathVariable Long id) {
         cartService.editCartItem(id, 1);
     }
 
-    @PutMapping("/DecrementQuantity/{id}")
+    @PutMapping("/decrement/{id}")
     public void subtractQuantity(@PathVariable Long id) {
         cartService.editCartItem(id, -1);
     }

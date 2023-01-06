@@ -20,9 +20,9 @@ public class Cart {
         itemList = new ArrayList<>();
     }
 
-    public List<CartItem> getItems() {
-        return Collections.unmodifiableList(itemList);
-    }
+//    public List<CartItem> getItems() {
+//        return Collections.unmodifiableList(itemList);
+//    }
 
     private void recalculate() {
         amount = 0;
@@ -32,21 +32,20 @@ public class Cart {
     }
 
     public void addProductToCart(Product product) {
-        boolean isPresent = false;
         for (CartItem cartItem : itemList) {
             if (cartItem.getId().equals(product.getId())) {
                 cartItem.resize(1);
-                isPresent = true;
+                recalculate();
+                return;
             }
         }
-        if (!isPresent) {
-            CartItem item = new CartItem(product.getId(),
-                    product.getName(),
-                    product.getPrice(),
-                    1,
-                    product.getPrice());
-            itemList.add(item);
-        }
+        CartItem item = new CartItem(product.getId(),
+                product.getName(),
+                product.getPrice(),
+                1,
+                product.getPrice());
+        amount += item.getPricePerCount();
+        itemList.add(item);
         recalculate();
     }
 
@@ -54,13 +53,14 @@ public class Cart {
         for (CartItem next : itemList) {
             if (next.getId().equals(id)) {
                 next.resize(inc);
+                recalculate();
                 if (next.getQuantity() == 0) {
                     itemList.remove(next);
+                    recalculate();
                     break;
                 }
             }
         }
-        recalculate();
     }
 
     public void clearTheCart() {
@@ -69,7 +69,8 @@ public class Cart {
     }
 
     public void removeProduct(Long id) {
-        itemList.removeIf(cartItem -> cartItem.getId().equals(id));
-        recalculate();
+        if (itemList.removeIf(cartItem -> cartItem.getId().equals(id))) {
+            recalculate();
+        }
     }
 }

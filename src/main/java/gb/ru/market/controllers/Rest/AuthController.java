@@ -2,6 +2,7 @@ package gb.ru.market.controllers.Rest;
 
 import gb.ru.market.dto.JwtRequest;
 import gb.ru.market.dto.JwtResponse;
+import gb.ru.market.dto.StringResponse;
 import gb.ru.market.services.UserDetailsServiceImpl;
 import gb.ru.market.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +40,8 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @GetMapping("/secured")
-    public String helloSecurity() {
-        return "hello";
+    @GetMapping("/auth_check")
+    public StringResponse authCheck(Principal principal) {
+        return new StringResponse(principal.getName());
     }
 }
