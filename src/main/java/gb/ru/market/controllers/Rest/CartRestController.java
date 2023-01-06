@@ -1,12 +1,9 @@
 package gb.ru.market.controllers.Rest;
 
-import gb.ru.market.entity.Product;
-import gb.ru.market.model.CartItem;
+import gb.ru.market.model.Cart;
 import gb.ru.market.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart")
@@ -20,13 +17,23 @@ public class CartRestController {
     }
 
     @GetMapping
-    public List<CartItem> showProductsInCart() {
-        return cartService.showProductsInCart();
+    public Cart showProductsInCart() {
+        return cartService.getCurrentCard();
     }
 
     @PostMapping("/{id}")
     public void addProductToCart(@PathVariable Long id) {
         cartService.add(id);
+    }
+
+    @PutMapping("/IncrementQuantity/{id}")
+    public void addQuantity(@PathVariable Long id) {
+        cartService.editCartItem(id, 1);
+    }
+
+    @PutMapping("/DecrementQuantity/{id}")
+    public void subtractQuantity(@PathVariable Long id) {
+        cartService.editCartItem(id, -1);
     }
 
     @DeleteMapping("/{id}")

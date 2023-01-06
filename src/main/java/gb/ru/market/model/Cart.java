@@ -1,40 +1,66 @@
 package gb.ru.market.model;
 
+import gb.ru.market.entity.Product;
 import lombok.Getter;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 @Getter
 public class Cart {
-    private final List<CartItem> itemList;
+    private List<CartItem> itemList;
     private int amount;
 
-    public Cart() {
+    @PostConstruct
+    public void init() {
         itemList = new ArrayList<>();
     }
 
-    public void addProductToCart(CartItem item) {
-        amount += item.getTotalPrice();
-        itemList.add(item);
+    public List<CartItem> getItems() {
+        return Collections.unmodifiableList(itemList);
     }
 
-    public void editCartItem(Long id, int k){
-        int sum = 0;
+    private void recalculate() {
+        amount = 0;
+        for (CartItem item : itemList) {
+            amount += item.getTotalPrice();
+        }
+    }
+
+    public void addProductToCart(Product product) {
+        boolean isPresent = false;
         for (CartItem cartItem : itemList) {
-            if (Objects.equals(cartItem.getId(), id)) {
-                cartItem.resize(k);
-                if (cartItem.getQuantity() == 0) {
-                    itemList.remove(cartItem);
+            if (cartItem.getId().equals(product.getId())) {
+                cartItem.resize(1);
+                isPresent = true;
+            }
+        }
+        if (!isPresent) {
+            CartItem item = new CartItem(product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    1,
+                    product.getPrice());
+            itemList.add(item);
+        }
+        recalculate();
+    }
+
+    public void editCartItem(Long id, int inc) {
+        for (CartItem next : itemList) {
+            if (next.getId().equals(id)) {
+                next.resize(inc);
+                if (next.getQuantity() == 0) {
+                    itemList.remove(next);
+                    break;
                 }
             }
-            sum += cartItem.getTotalPrice();
         }
-        amount = sum;
+        recalculate();
     }
 
     public void clearTheCart() {
@@ -43,20 +69,7 @@ public class Cart {
     }
 
     public void removeProduct(Long id) {
-        for (int i = 0; i < itemList.size(); i++) {
-            if (Objects.equals(itemList.get(i).getId(), id)) {
-                amount = amount - itemList.get(i).getTotalPrice();
-                itemList.remove(itemList.get(i));
-            }
-        }
-    }
-
-    public CartItem findProductById(Long id) {
-        for (CartItem cartItem : itemList) {
-            if (Objects.equals(cartItem.getId(), id)) {
-                return cartItem;
-            }
-        }
-        return null;
+        itemList.removeIf(cartItem -> cartItem.getId().equals(id));
+        recalculate();
     }
 }

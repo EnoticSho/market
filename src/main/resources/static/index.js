@@ -6,31 +6,43 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     }
 
     $scope.deleteProductById = function (productId) {
-        $http.delete('http://localhost:8080/api/v1/products/' + productId).then(function (response) {
+        $http.delete('http://localhost:8080/api/v1/products/' + productId).then(function () {
             $scope.loadProducts();
         });
     }
 
     $scope.addToCart = function (productId) {
-        $http.post('http://localhost:8080/api/v1/cart/' + productId).then(function (response) {
+        $http.post('http://localhost:8080/api/v1/cart/' + productId).then(function () {
             $scope.loadProductsInCart()
         });
     }
 
     $scope.loadProductsInCart = function () {
         $http.get('http://localhost:8080/api/v1/cart/').then(function (response) {
-            $scope.productInCart = response.data;
+            $scope.cart = response.data;
         });
     }
 
     $scope.deleteProductFromCart = function (productId) {
-        $http.delete('http://localhost:8080/api/v1/cart/' + productId).then(function (response) {
+        $http.delete('http://localhost:8080/api/v1/cart/' + productId).then(function () {
             $scope.loadProductsInCart()
         });
     }
 
     $scope.clearTheCart = function () {
-        $http.delete('http://localhost:8080/api/v1/cart/').then(function (response) {
+        $http.delete('http://localhost:8080/api/v1/cart/').then(function () {
+            $scope.loadProductsInCart()
+        });
+    }
+
+    $scope.incrementQuantity = function (productId) {
+        $http.put('http://localhost:8080/api/v1/cart/IncrementQuantity/' + productId).then(function () {
+            $scope.loadProductsInCart()
+        });
+    }
+
+    $scope.decrementQuantity = function (productId) {
+        $http.put('http://localhost:8080/api/v1/cart/DecrementQuantity/' + productId).then(function () {
             $scope.loadProductsInCart()
         });
     }
