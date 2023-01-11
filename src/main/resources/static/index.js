@@ -1,13 +1,13 @@
-angular.module('app', []).controller('indexController', function ($scope, $http) {
+angular.module('app', ['ngStorage']).controller('indexController', function ($scope, $http, $localStorage) {
 
-    const contextPath = 'http://localhost:8189/shop/api/v1';
+    const contextPath = 'http://localhost:8080/api/v1';
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8189/shop/auth', $scope.user)
+        $http.post('http://localhost:8080/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.winterMarketUser = {username: $scope.user.username, token: response.data.token};
+                    $localStorage.marketUser = {username: $scope.user.username, token: response.data.token};
 
                     $scope.user.username = null;
                     $scope.user.password = null;
@@ -22,11 +22,12 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     };
 
     $scope.clearUser = function () {
-        delete $localStorage.winterMarketUser;
+        delete $localStorage.marketUser;
         $http.defaults.headers.common.Authorization = '';
     };
+
     $scope.isUserLoggedIn = function () {
-        if ($localStorage.winterMarketUser) {
+        if ($localStorage.marketUser) {
             return true;
         } else {
             return false;
@@ -34,24 +35,24 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     };
 
     $scope.checkAuth = function () {
-        $http.get('http://localhost:8189/shop/auth_check').then(function (response) {
+        $http.get('http://localhost:8080/auth_check').then(function (response) {
             alert(response.data.value);
         });
     };
 
-    if ($localStorage.winterMarketUser) {
+    if ($localStorage.marketUser) {
         try {
-            let jwt = $localStorage.winterMarketUser.token;
+            let jwt = $localStorage.marketUser.token;
             let payload = JSON.parse(atob(jwt.split('.')[1]));
-            let currentTime = parseInt(new Date().getTime() / 100);
+            let currentTime = parseInt(new Date().getTime() / 1000);
             if (currentTime > payload.exp) {
                 console.log("Token is expired!");
-                delete $localStorage.winterMarketUser;
+                delete $localStorage.marketUser;
                 $http.defaults.headers.common.Authorization = '';
             }
         } catch (e) {
         }
-        $http.defaults.headers.common.Autorization = 'Bearer ' + $localStorage.winterMarketUser.token;
+        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.marketUser.token;
     }
 
     $scope.loadProducts = function () {
@@ -68,7 +69,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     $scope.addToCart = function (productId) {
         $http.post('http://localhost:8080/api/v1/cart/' + productId).then(function () {
-            $scope.loadProductsInCart()
+            $scope.loadProductsInCart();
         });
     }
 
@@ -80,41 +81,41 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     $scope.deleteProductFromCart = function (productId) {
         $http.delete('http://localhost:8080/api/v1/cart/' + productId).then(function () {
-            $scope.loadProductsInCart()
+            $scope.loadProductsInCart();
         });
     }
 
     $scope.clearTheCart = function () {
         $http.delete('http://localhost:8080/api/v1/cart/').then(function () {
-            $scope.loadProductsInCart()
+            $scope.loadProductsInCart();
         });
     }
 
     $scope.incrementQuantity = function (productId) {
         $http.put('http://localhost:8080/api/v1/cart/increment/' + productId).then(function () {
-            $scope.loadProductsInCart()
+            $scope.loadProductsInCart();
         });
     }
 
     $scope.decrementQuantity = function (productId) {
         $http.put('http://localhost:8080/api/v1/cart/decrement/' + productId).then(function () {
-            $scope.loadProductsInCart()
+            $scope.loadProductsInCart();
         });
     }
 
-    $scope.createOrder = function (productId) {
+    $scope.createOrder = function () {
         $http({
-            url: contextPath + '/orders/create_order',
+            url: contextPath + '/purchase',
             method: 'POST',
-            params: {
-                productId: productId
-            }
+            // params: {
+            //     productId: productId
+            // }
         }).then(function () {
-            $scope.clearCart();
-            $scope.loadCart();
+            $scope.clearTheCart();
+            $scope.loadProductsInCart();
         });
     }
 
-    $scope.loadProductsInCart()
+    $scope.loadProductsInCart();
     $scope.loadProducts();
 });

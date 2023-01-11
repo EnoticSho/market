@@ -1,9 +1,10 @@
 package gb.ru.market.entity;
 
-import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "purchase_items")
@@ -28,4 +29,11 @@ public class PurchaseItem {
 
     @Column(name = "product_price")
     private int pricePerProduct;
+
+    public PurchaseItem(Product product, Purchase purchase, int quantity, int pricePerCount) {
+        this.product = product;
+        this.purchase = purchase;
+        this.quantity = quantity;
+        this.pricePerProduct = pricePerCount;
+    }
 }

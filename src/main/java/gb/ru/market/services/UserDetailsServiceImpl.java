@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("userDetailServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -43,5 +44,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public Optional<User> findByName(String name) {
+        return userRepository.findByName(name);
     }
 }

@@ -17,16 +17,19 @@ public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "purchase_id")
+    @Column(name = "purchase_id", nullable = false)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "purchase")
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.PERSIST)
     private List<PurchaseItem> items;
 
     @Column(name = "purchase_date")
     private Date date;
+
+    @Column(name = "purchase_total_cost")
+    private int totalCost;
 }

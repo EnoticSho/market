@@ -2,8 +2,11 @@ package gb.ru.market.services;
 
 import gb.ru.market.entity.Product;
 import gb.ru.market.model.Cart;
+import gb.ru.market.model.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CartService {
@@ -15,6 +18,10 @@ public class CartService {
     public CartService(Cart cart, ProductService productService1) {
         this.cart = cart;
         this.productService = productService1;
+    }
+
+    public List<CartItem> getProductList() {
+        return cart.getItemList();
     }
 
     public Cart getCurrentCard() {
@@ -36,5 +43,9 @@ public class CartService {
 
     public void editCartItem(Long id, int inc) {
         cart.editCartItem(id, inc);
+    }
+
+    public int getAmount() {
+        return cart.getAmount();
     }
 }
