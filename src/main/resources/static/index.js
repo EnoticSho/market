@@ -91,14 +91,15 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         });
     }
 
-    $scope.incrementQuantity = function (productId) {
-        $http.put('http://localhost:8080/api/v1/cart/increment/' + productId).then(function () {
-            $scope.loadProductsInCart();
-        });
-    }
-
-    $scope.decrementQuantity = function (productId) {
-        $http.put('http://localhost:8080/api/v1/cart/decrement/' + productId).then(function () {
+    $scope.incrementQuantity = function (productId, delta) {
+        $http({
+            url: contextPath + '/cart/increment',
+            method: 'Put',
+            params: {
+                productId: productId,
+                delta: delta
+            }
+        }).then(function () {
             $scope.loadProductsInCart();
         });
     }

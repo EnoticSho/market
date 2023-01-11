@@ -82,9 +82,9 @@
             <td>{{item.name}}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary" ng-click="decrementQuantity(item.id)">-</button>
+                    <button type="button" class="btn btn-primary" ng-click="incrementQuantity(item.id, -1)">-</button>
                     <button type="button" class="btn btn-primary" disabled>{{item.quantity}}</button>
-                    <button type="button" class="btn btn-primary" ng-click="incrementQuantity(item.id)">+</button>
+                    <button type="button" class="btn btn-primary" ng-click="incrementQuantity(item.id, 1)">+</button>
                 </div>
             </td>
             <td>{{item.pricePerCount}}</td>
