@@ -1,5 +1,7 @@
 package gb.ru.market.services;
 
+import gb.ru.market.converter.ProductConverter;
+import gb.ru.market.dto.ProductDto;
 import gb.ru.market.entity.Product;
 import gb.ru.market.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,12 @@ import java.util.Optional;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductConverter productConverter;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductConverter productConverter) {
         this.productRepository = productRepository;
+        this.productConverter = productConverter;
     }
 
     public List<Product> getAllProducts() {
@@ -27,6 +31,10 @@ public class ProductService {
 
     public void saveProduct(Product product) {
         productRepository.save(product);
+    }
+
+    public Product createNewProduct(ProductDto productDto) {
+        return productConverter.dtoToEntity(productDto);
     }
 
     public void deleteProduct(Long id) {
