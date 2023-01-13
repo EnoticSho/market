@@ -1,0 +1,4 @@
+server:
+  servlet:
+    context-path: /shop-carts
+  port: 8190
