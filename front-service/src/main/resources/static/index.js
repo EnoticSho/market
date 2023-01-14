@@ -3,7 +3,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     const contextPath = 'http://localhost:8080/api/v1';
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8080/auth', $scope.user)
+        $http.post('http://localhost:5555/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
@@ -35,7 +35,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.checkAuth = function () {
-        $http.get('http://localhost:8080/auth_check').then(function (response) {
+        $http.get('http://localhost:5555/auth_check').then(function (response) {
             alert(response.data.value);
         });
     };
@@ -56,45 +56,45 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     }
 
     $scope.loadProducts = function () {
-        $http.get('http://localhost:8080/api/v1/products/').then(function (response) {
+        $http.get('http://localhost:5555/core/api/v1/products/').then(function (response) {
             $scope.productList = response.data;
         });
     }
 
     $scope.deleteProductById = function (productId) {
-        $http.delete('http://localhost:8080/api/v1/products/' + productId).then(function () {
+        $http.delete('http://localhost:5555/core/api/v1/products/' + productId).then(function () {
             $scope.loadProducts();
         });
     }
 
     $scope.addToCart = function (productId) {
-        $http.post('http://localhost:8081/cart/api/v1/cart/' + productId).then(function () {
+        $http.post('http://localhost:5555/cart/api/v1/cart/' + productId).then(function () {
             $scope.loadProductsInCart();
         });
     }
 
     $scope.loadProductsInCart = function () {
-        $http.get('http://localhost:8081/cart/api/v1/cart/').then(function (response) {
+        $http.get('http://localhost:5555/cart/api/v1/cart/').then(function (response) {
             $scope.cart = response.data;
         });
     }
 
     $scope.deleteProductFromCart = function (productId) {
-        $http.delete('http://localhost:8081/cart/api/v1/cart/' + productId).then(function () {
+        $http.get('http://localhost:5555/cart/api/v1/cart/delete/' + productId).then(function () {
             $scope.loadProductsInCart();
         });
     }
 
     $scope.clearTheCart = function () {
-        $http.delete('http://localhost:8081/cart/api/v1/cart/').then(function () {
+        $http.get('http://localhost:5555/cart/api/v1/cart/deleteCart').then(function () {
             $scope.loadProductsInCart();
         });
     }
 
     $scope.incrementQuantity = function (productId, delta) {
         $http({
-            url: 'http://localhost:8081/cart/api/v1/cart/increment',
-            method: 'Put',
+            url: 'http://localhost:5555/cart/api/v1/cart/increment',
+            method: 'Get',
             params: {
                 productId: productId,
                 delta: delta
@@ -106,11 +106,8 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
 
     $scope.createOrder = function () {
         $http({
-            url: contextPath + '/purchase',
+            url: 'http://localhost:5555/core/api/v1/purchase',
             method: 'POST',
-            // params: {
-            //     productId: productId
-            // }
         }).then(function () {
             $scope.clearTheCart();
             $scope.loadProductsInCart();

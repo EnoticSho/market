@@ -17,15 +17,13 @@ public class CartServiceIntegration {
                 .retrieve()
                 .bodyToMono(CartDto.class)
                 .block();
-
     }
 
     public void clear() {
-        cartServiceWebClient.get()
+        cartServiceWebClient.delete()
                 .uri("/api/v1/cart/clear")
                 .retrieve()
                 .toBodilessEntity()
                 .block();
-
     }
 }

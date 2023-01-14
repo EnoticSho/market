@@ -20,10 +20,8 @@ public class  Purchase {
     @Column(name = "purchase_id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    @Column(name = "username")
+    private String username;
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.PERSIST)
     private List<PurchaseItem> items;
 

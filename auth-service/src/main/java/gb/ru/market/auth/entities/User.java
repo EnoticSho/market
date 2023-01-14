@@ -29,7 +29,4 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "user_status")
     private Status status;
-
-    @OneToMany(mappedBy = "user")
-    private List<Purchase> purchasesList;
 }

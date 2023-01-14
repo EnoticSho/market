@@ -30,7 +30,7 @@ public class CartService {
     }
 
     public void add(Long id) {
-        ProductDto product = productService.getProductById(id).orElseThrow();
+        ProductDto product = productService.getProductById(id);
         cart.addProductToCart(product);
     }
 

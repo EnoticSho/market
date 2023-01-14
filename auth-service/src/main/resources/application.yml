@@ -7,20 +7,12 @@ spring:
     username: bestuser
     password: Password123!
     driver-class-name: com.mysql.cj.jdbc.Driver
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
   flyway:
     baseline-on-migrate: true
 server:
   servlet:
-    context-path: /core
-  port: 8080
-
-integrations:
-  cart-service:
-    url: http://localhost:8190/cart
-    read-timeout: 10000
-    write-timeout: 5000
-    connect-timeout: 5000
+    context-path: /auth
+  port: 8188
+jwt:
+  secret: EI&!%Ti34NeSmOtRi7666SUDA23232eto43SEcRET@#$%^&%$@Ponyal?uroD
+  lifetime: 36000000

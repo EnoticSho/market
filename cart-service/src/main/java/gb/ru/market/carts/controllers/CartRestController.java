@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/cart")
-@CrossOrigin("*")
 public class CartRestController {
 
     private final CartService cartService;
@@ -30,17 +29,17 @@ public class CartRestController {
         cartService.add(id);
     }
 
-    @PutMapping("/increment")
+    @GetMapping("/increment")
     public void addQuantity(@RequestParam("productId") Long id, @RequestParam("delta") int delta) {
         cartService.editCartItem(id, delta);
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/delete/{id}")
     public void deleteProductToCart(@PathVariable Long id) {
         cartService.deleteFromCart(id);
     }
 
-    @DeleteMapping
+    @GetMapping("/deleteCart")
     public void clearTheCart() {
         cartService.clearCart();
     }
